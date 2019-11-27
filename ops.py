@@ -14,14 +14,19 @@ def conv2d(inputs, num_outputs, kernel_shape, strides=[1, 1], mask_type=None, sc
   Returns:
     outputs: nhwc
   """
+  #scope is just a name used to share variables. Don't worry about it, it isn't being used in our code.
   with tf.variable_scope(scope) as scope:
+    #get kernel height and width from kernel shape
     kernel_h, kernel_w = kernel_shape
+    #get stride hight and width
     stride_h, stride_w = strides
+    #get other hyperparams
     batch_size, height, width, in_channel = inputs.get_shape().as_list()
+
 
     center_h = kernel_h // 2
     center_w = kernel_w // 2
-
+    #the dimentions of the convolutional kernel must be an odd number
     assert kernel_h % 2 == 1 and kernel_w % 2 == 1, "kernel height and width must be odd number"
     mask = np.zeros((kernel_h, kernel_w, in_channel, num_outputs), dtype=np.float32)
     if mask_type is not None:

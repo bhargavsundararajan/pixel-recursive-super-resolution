@@ -11,10 +11,12 @@ from utils import *
 import os
 import time
 
+#hyperparams
 flags = tf.app.flags
 conf = flags.FLAGS
 class Solver(object):
   def __init__(self):
+    #GPUorCPU
     self.device_id = conf.device_id
     self.train_dir = conf.train_dir
     self.samples_dir = conf.samples_dir
@@ -32,8 +34,9 @@ class Solver(object):
     else:
       device_str = '/cpu:0'
     with tf.device(device_str):
-      #dataset
+      #dataset object
       self.dataset = DataSet(conf.imgs_list_path, self.num_epoch, self.batch_size)
+      #network object
       self.net = Net(self.dataset.hr_images, self.dataset.lr_images, 'prsr')
       #optimizer
       self.global_step = tf.get_variable('global_step', [], initializer=tf.constant_initializer(0), trainable=False)
